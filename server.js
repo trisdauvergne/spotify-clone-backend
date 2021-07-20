@@ -16,17 +16,35 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.post('/refresh', (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  const spotifyApi = new SpotifyWebApi({
+    ...credentials,
+    refreshToken,
+  });
+
+  spotifyApi.refreshAccessToken()
+    .then(data => {
+      console.log('data from refresh', data.body);
+    })
+    .catch(err => {
+      console.log(err.message)
+      res.sendStatus(400);
+    })
+})
+
 app.post('/login', (req, res) => {
   const code = req.body.code;
   const spotifyApi = new SpotifyWebApi(credentials);
 
   spotifyApi.authorizationCodeGrant(code)
     .then(data => {
-      console.log('data from authorizationCodeGrant', data.body);
+      // console.log('data from authorizationCodeGrant', data.body);
       res.json({
         accessToken: data.body.access_token,
         refreshToken: data.body.refresh_token,
-        expiresIn: data.body.expiresIn,
+        expiresIn: data.body.expires_in,
       });
     })
     .catch((err) => {
