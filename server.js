@@ -18,7 +18,6 @@ app.use(express.json());
 
 app.post('/refresh', (req, res) => {
   const refreshToken = req.body.refreshToken;
-
   const spotifyApi = new SpotifyWebApi({
     ...credentials,
     refreshToken,
@@ -26,7 +25,10 @@ app.post('/refresh', (req, res) => {
 
   spotifyApi.refreshAccessToken()
     .then(data => {
-      console.log('data from refresh', data.body);
+      res.json({
+        accessToken: data.body.access_token,
+        expiresIn: data.body.expires_in,
+      })
     })
     .catch(err => {
       console.log(err.message)
@@ -40,7 +42,6 @@ app.post('/login', (req, res) => {
 
   spotifyApi.authorizationCodeGrant(code)
     .then(data => {
-      // console.log('data from authorizationCodeGrant', data.body);
       res.json({
         accessToken: data.body.access_token,
         refreshToken: data.body.refresh_token,
