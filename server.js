@@ -4,15 +4,15 @@ const lyricsFinder = require('lyrics-finder');
 const app = express();
 const cors = require('cors');
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   require('dotenv').config();
+// }
+
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 
-console.log('PROCESS.ENV.NODE_ENV', process.env.NODE_ENV);
-
-const REDIRECT = app.settings.env === 'development' ? 'http://localhost:3000' :'https://trisdauvergne-spotify-clone.netlify.app';
+const REDIRECT = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' :'https://trisdauvergne-spotify-clone.netlify.app';
 
 const credentials = {
   clientId: process.env.CLIENT_ID,
@@ -20,9 +20,9 @@ const credentials = {
   redirectUri: REDIRECT,
 }
 
-console.log('in server.js line 14', app.settings.env);
-
-console.log('In server.js', credentials);
+console.log('***** in server.js line 14', app.settings.env);
+console.log('***** in server.js line 15', process.env.NODE_ENV);
+console.log('***** in server.js line 16', credentials);
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -55,9 +55,7 @@ app.post('/refresh', (req, res) => {
 
 app.post('/login', (req, res) => {
   const code = req.body.code;
-  console.log('*** in login', code);
   const spotifyApi = new SpotifyWebApi(credentials);
-  console.log('*** credentials in login', credentials);
 
   spotifyApi.authorizationCodeGrant(code)
     .then(data => {
