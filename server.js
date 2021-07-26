@@ -41,14 +41,16 @@ app.post('/refresh', (req, res) => {
       })
     })
     .catch(err => {
-      console.log(err.message)
+      console.log('in refresh', err.message)
       res.sendStatus(400);
     })
 })
 
 app.post('/login', (req, res) => {
   const code = req.body.code;
+  console.log('*** in login', code);
   const spotifyApi = new SpotifyWebApi(credentials);
+  console.log('*** credentials in login', credentials);
 
   spotifyApi.authorizationCodeGrant(code)
     .then(data => {
@@ -59,7 +61,7 @@ app.post('/login', (req, res) => {
       });
     })
     .catch((err) => {
-      console.log('error message in login', err.message);
+      console.log('*** error message in login', err.message);
       res.sendStatus(400);
     })
 })
