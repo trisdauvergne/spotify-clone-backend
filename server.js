@@ -5,10 +5,12 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config();
 
+const redirect = app.settings.env === 'development' ? process.env.REDIRECT_URI : process.env.DEPLOYED_REDIRECT;
+
 const credentials = {
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: process.env.REDIRECT_URI,
+  redirectUri: redirect,
 }
 
 console.log('in server.js line 14', app.settings.env);
