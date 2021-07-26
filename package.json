@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "devstart": "nodemon server.js",
+    "prodstart": "set NODE_ENV=production node server.js",
     "start": "node server.js"
   },
   "keywords": [],
