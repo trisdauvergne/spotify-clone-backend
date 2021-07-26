@@ -3,18 +3,24 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const lyricsFinder = require('lyrics-finder');
 const app = express();
 const cors = require('cors');
-require('dotenv').config();
 
-const redirect = app.settings.env === 'development' ? 'http://localhost:3000' :'https://trisdauvergne-spotify-clone.netlify.app/';
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
+const PORT = process.env.PORT || 3001;
+
+console.log('PROCESS.ENV.NODE_ENV', process.env.NODE_ENV);
+
+const REDIRECT = app.settings.env === 'development' ? 'http://localhost:3000' :'https://trisdauvergne-spotify-clone.netlify.app';
 
 const credentials = {
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: redirect,
+  redirectUri: REDIRECT,
 }
 
 console.log('in server.js line 14', app.settings.env);
-console.log('*****', process.env.NODE_ENV);
 
 console.log('In server.js', credentials);
 
@@ -67,4 +73,4 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.listen(process.env.PORT || 3001, () => console.log('Server is running...'));
+app.listen(PORT, () => console.log('Server is running on', PORT));
