@@ -14,12 +14,15 @@ const credentials = {
 }
 
 console.log('in server.js line 14', app.settings.env);
+console.log('*****', process.env.NODE_ENV);
 
 console.log('In server.js', credentials);
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// // use the express-static middlewares
+// app.use(express.static('public'))
 
 app.get('/lyrics', async (req, res) => {
   const lyrics = await lyricsFinder(req.query.artist, req.query.track) || 'No lyrics found';
@@ -66,4 +69,4 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.listen(3001);
+app.listen(process.env.PORT || 3001, () => console.log('Server is running...'));
