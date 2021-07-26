@@ -25,6 +25,7 @@ app.use(express.json());
 // app.use(express.static('public'))
 
 app.get('/lyrics', async (req, res) => {
+  console.log('************* lyrics', req);
   const lyrics = await lyricsFinder(req.query.artist, req.query.track) || 'No lyrics found';
   res.json({ lyrics });
 });
