@@ -11,6 +11,8 @@ const credentials = {
   redirectUri: process.env.REDIRECT_URI,
 }
 
+console.log('in server.js line 14', app.settings.env);
+
 console.log('In server.js', credentials);
 
 app.use(cors());
